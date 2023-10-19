@@ -32,7 +32,7 @@ LEFT JOIN departments d ON d.dept_no = demp.dept_no;
 SELECT * FROM employees_dept;
 
 
-Again in this case there is missing information, only 7 employees are accounted for in the dept_emp table meaning only 7 employees are listed in the joined table furthermore there is a duplicate employee number in the salaries table meaning there are only 7 valid entries (8 entries in total, 1 unaccounted for). Statement updated to allow for NULLS. 
+Again in this case there is missing information, only 7 employees are accounted for in the dept_emp table meaning only 7 employees are listed in the joined table furthermore there is a duplicate employee number in the salaries table meaning there are only 7 valid entries (8 entries in total, 1 unaccounted for). Statement updated to allow for NULLS. Employee ID 10001 also has 2 differing salaries associated with them 
 
 
 
@@ -44,7 +44,7 @@ FROM employees e
 INNER JOIN dept_emp demp ON demp.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = demp.dept_no
 	WHERE d.dept_no = 'd003'
-UNION ALL 
+UNION 
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, e.birth_date, e.hire_date, d.dept_name, dman.dept_no
 FROM employees e
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no
@@ -83,7 +83,7 @@ INNER JOIN dept_emp demp ON demp.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = demp.dept_no
 	WHERE demp.from_date > '1986-01-01'
 	AND d.dept_name = 'Human Resources'
-UNION ALL 
+UNION
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, dman.from_date, d.dept_name, dman.dept_no
 FROM employees e
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no
@@ -93,7 +93,7 @@ INNER JOIN departments d ON d.dept_no = dman.dept_no
 
 SELECT * FROM hr_hire_date;
 
-The people listed as HR employees all have hire dates starting later than 1986 according to the employees table, however the start date is different according to the 'from_date' columns so I am using the 'from_date' from the respective dept_emp and dept_manager tables as I assume they may have changed roles and been a HR employee later.
+The people listed as HR employees all have hire dates starting later than 1986 according to the employees table, however the start date is different according to the 'from_date' columns so I am using the 'from_date' from the respective dept_emp and dept_manager tables as I assume they may have changed roles and become a HR employee later.
 
 
 
@@ -104,6 +104,8 @@ CREATE OR REPLACE TEMPORARY TABLE pay_rise AS
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, salary
 FROM employees e
 LEFT JOIN salaries s ON s.emp_no = e.emp_no;
+
+SELECT * FROM pay_rise;
 
 UPDATE pay_rise
 	SET salary = salary*1.02;
@@ -179,6 +181,8 @@ SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, s.salary, e.emp_no, 
 FROM employees e
 LEFT JOIN salaries s ON s.emp_no = e.emp_no
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no;
+
+SELECT * FROM manager_sal_1990_increase;
 
 UPDATE manager_sal_1990_increase
 	SET salary = salary*1.10
