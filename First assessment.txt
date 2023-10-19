@@ -149,3 +149,40 @@ INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no;
 SELECT * FROM manager_sal;
 
 In this case, we can only return the rows for which the employee ids match, meaning a lot of manager salaries are not accounted for and because of a duplicate ID one row is being returned twice. 
+
+
+
+9      Create a database view to list all departments and their department’s managers, who were hired between 1980 and 1990.
+
+
+
+CREATE OR REPLACE VIEW dept_man_1980_to_1990 AS
+SELECT CONCAT(e.first_name, ' ', e.last_name), d.dept_name, d.dept_no, e.hire_date, e.emp_no
+FROM departments d
+LEFT JOIN dept_manager dman ON dman.dept_no = d.dept_no
+LEFT JOIN employees e ON e.emp_no = dman.emp_no
+	WHERE hire_date BETWEEN '1980-01-01' AND '1990-01-01';
+
+SELECT * FROM dept_man_1980_to_1990;
+
+
+The BETWEEN statement doesn't allow for null values on the date, I have looked into adding and IsNull condition to the statement however it hasn't worked yet. 
+
+
+
+10      Create a SQL statement to increase salaries of all department’s managers up to 10% who are working since 1990.
+
+
+
+CREATE OR REPLACE TEMPORARY TABLE manager_sal_1990_increase AS
+SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, s.salary, e.emp_no, e.hire_date
+FROM employees e
+LEFT JOIN salaries s ON s.emp_no = e.emp_no
+INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no;
+
+UPDATE manager_sal_1990_increase
+	SET salary = salary*1.10
+		WHERE hire_date >= '1990-01-01';
+
+
+SELECT * FROM manager_sal_1990_increase;
