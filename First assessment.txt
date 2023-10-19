@@ -43,13 +43,13 @@ SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, e.birth_date, e.hire
 FROM employees e
 INNER JOIN dept_emp demp ON demp.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = demp.dept_no
-WHERE d.dept_no = 'd003'
+	WHERE d.dept_no = 'd003'
 UNION ALL 
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, e.birth_date, e.hire_date, d.dept_name, dman.dept_no
 FROM employees e
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = dman.dept_no
-WHERE d.dept_no = 'd003';
+	WHERE d.dept_no = 'd003';
 
 SELECT * FROM hr_bday;
 
@@ -81,14 +81,14 @@ SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, demp.from_date, d.de
 FROM employees e
 INNER JOIN dept_emp demp ON demp.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = demp.dept_no
-WHERE demp.from_date > '1986-01-01'
+	WHERE demp.from_date > '1986-01-01'
 	AND d.dept_name = 'Human Resources'
 UNION ALL 
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, dman.from_date, d.dept_name, dman.dept_no
 FROM employees e
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = dman.dept_no
-WHERE dman.from_date > '1986-01-01'
+	WHERE dman.from_date > '1986-01-01'
 	AND d.dept_name = 'Human Resources';
 
 SELECT * FROM hr_hire_date;
@@ -106,7 +106,7 @@ FROM employees e
 LEFT JOIN salaries s ON s.emp_no = e.emp_no;
 
 UPDATE pay_rise
-SET salary = salary*1.02;
+	SET salary = salary*1.02;
 
 SELECT * FROM pay_rise;
 
@@ -129,8 +129,8 @@ INNER JOIN departments d ON d.dept_no = dman.dept_no;
 SELECT * FROM delete_a;
 
 DELETE FROM delete_a
-WHERE dept_name = 'Marketing'
-OR full_name LIKE 'A%';
+	WHERE dept_name = 'Marketing'
+	OR full_name LIKE 'A%';
 
 SELECT * FROM delete_a;
 
