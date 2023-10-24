@@ -133,7 +133,7 @@ SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name, d.dept_name
 FROM employees e
 INNER JOIN dept_manager dman ON dman.emp_no = e.emp_no
 INNER JOIN departments d ON d.dept_no = dman.dept_no
-ORDER BY first_name;
+ORDER BY full_name;
 
 SELECT * FROM delete_a;
 
